@@ -22,7 +22,7 @@ def load_gap_test_data(settings):
 
 
 def predict(gap_test, cased, layer, h_layer_size, seed, cv_seed, settings):
-    # TODO: do I need to set up this seed every time?
+    # part of the requirement to reproduce the model was to
     torch.manual_seed(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
@@ -47,7 +47,6 @@ def predict(gap_test, cased, layer, h_layer_size, seed, cv_seed, settings):
     model_name = BERT_MODEL + "_" + str(abs(layer))
 
     # initialize the tokenizer
-    # TODO: out into separate folder
     tokenizer = BertTokenizer.from_pretrained(
         BERT_MODEL,
         do_lower_case=DO_LOWER_CASE,
@@ -72,11 +71,10 @@ def predict(gap_test, cased, layer, h_layer_size, seed, cv_seed, settings):
     model = GAPModel(BERT_MODEL, 0, layer, h_layer_size, torch.device("cuda:0"))
     optimizer = torch.optim.Adam(model.parameters(), lr=0.1)
 
-    # TODO: fix this
     bot = GAPBot(
         model, test_loader, test_loader,
         optimizer=optimizer, echo=True,
-        avg_window=25, checkpoint_dir="../blablabla"
+        avg_window=25, checkpoint_dir="../tmp"
     )
 
     # create the directory for predictions
@@ -85,11 +83,12 @@ def predict(gap_test, cased, layer, h_layer_size, seed, cv_seed, settings):
         os.makedirs(pred_dir)
 
     finetuned_embedding_path = os.path.join(settings['MODELS_PRETRAIN_DIR'], model_name + '_finetuned', 'best.pth')
-    # first load the embeddings
+    # first load the fine-tuned embeddings
     bot.load_model(finetuned_embedding_path)
 
     # iterate over all cv models and make the predictions
     for fold_n in range(10):
+
         # Load the best checkpoint from warmup
         model_from_fold = os.path.join(settings['MODELS_GAP_DIR'], model_name, str(fold_n), 'light.pth')
         bot.load_model(model_from_fold)

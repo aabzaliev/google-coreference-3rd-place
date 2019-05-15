@@ -35,7 +35,7 @@ class Head(nn.Module):
         # 64 are from proj_dim, 2 are from url, 9 is for the other features, 1 is gender,
         # 3 are synt distance, 2 are the distances to the root
 
-        # TODO: after fine-tuning BERT this is not required, better to take
+        # after fine-tuning BERT this is not required, throw away
         for i, module in enumerate(self.fc):
             if isinstance(module, (nn.BatchNorm1d, nn.BatchNorm2d)):
                 nn.init.constant_(module.weight, 1)

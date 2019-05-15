@@ -38,7 +38,7 @@ def train(gap_train, cased, layer, h_layer_size, seed, cv_seed, settings, lr=2e-
     :param settings:
     :return:
     '''
-    # TODO: do I need to set up this seed every time?
+
     torch.manual_seed(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
@@ -47,7 +47,6 @@ def train(gap_train, cased, layer, h_layer_size, seed, cv_seed, settings, lr=2e-
     # shuffle eafter setting the proper seed
     gap_train = gap_train.sample(frac=1.0)
 
-    # TODO: as this stuff is part of the each model it can be put into separate function
     assert layer == -5 or layer == -6
     assert isinstance(cased, bool)
 
@@ -90,7 +89,6 @@ def train(gap_train, cased, layer, h_layer_size, seed, cv_seed, settings, lr=2e-
     strat[gap_train['A-coref']] = 1
     strat[gap_train['B-coref']] = 2
 
-    # TODO: make CV a separate function
     for fold_n, (train_index, valid_index) in enumerate(folds.split(gap_train, y=strat)):
         print("fold n#{}".format(fold_n))
         train_ds = GAPDataset(gap_train.iloc[train_index], tokenizer)

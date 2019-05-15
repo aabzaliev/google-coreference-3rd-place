@@ -22,12 +22,6 @@ def prepare_all_data(settings):
 
 
 def make_features(settings):
-    '''
-
-    reads from the preprocessed data folder and makes the features
-    :param settings:
-    :return:
-    '''
 
     PRONOUNS = {
         'she': "FEMININE",

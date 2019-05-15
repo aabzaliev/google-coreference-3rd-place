@@ -31,7 +31,6 @@ def pretrain(warmup_train, warmup_val, cased, layer, h_layer_size, seed, bert_fi
     warmup_train = warmup_train.sample(frac=1.0)
     warmup_val = warmup_val.sample(frac=1.0)
 
-    # TODO: as this stuff is part of the each model it can be put into separate function
     assert layer == -5 or layer == -6
     assert isinstance(cased, bool)
 
@@ -50,7 +49,6 @@ def pretrain(warmup_train, warmup_val, cased, layer, h_layer_size, seed, bert_fi
     model_name = BERT_MODEL + "_" + str(abs(layer))
 
     # initialize the tokenizer
-    # TODO: out into separate folder
     tokenizer = BertTokenizer.from_pretrained(
         BERT_MODEL,
         do_lower_case=DO_LOWER_CASE,

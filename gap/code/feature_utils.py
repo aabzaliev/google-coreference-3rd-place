@@ -18,7 +18,7 @@ nlp = spacy.load('en_core_web_lg')
 
 # NOTE: code is still messy, majority of it is taken from the kaggle kernels
 # and from the reproduce_gap_results git repo
-# many functions are not even used. TODO: rework
+# many functions are not even used
 
 class Graph():
     def __init__(self):
